@@ -20,12 +20,7 @@ def get_posts(db: Session = Depends(get_db), current_user:int = Depends(oauth2.g
 
     posts = db.query(models.Post, func.count(models.Vote.post_id).label("votes")).join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).filter(models.Post.title.contains(search)).limit(limit).offset(skip).all()
 
-
-    print(posts)
-
-
-
-    return results
+    return posts
 
 
 @router.get("/{id}", response_model=schemas.PostOut)
