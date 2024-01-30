@@ -1,11 +1,12 @@
 from app import schemas
-from .database import client, session
+from app.config import settings
+from jose import jwt
 
 def test_root(client):
     res = client.get("/")
     print(res.json().get('message'))
     assert res.status_code == 200
-    assert res.json().get('message') == 'Hello World on docker'
+    assert res.json().get('message') == 'Hello World'
 
 
 def test_create_user(client):
@@ -16,8 +17,15 @@ def test_create_user(client):
     assert new_user.email == "hello@mail.com"
 
 
-def test_login_user(client):
-    res = client.post("/login", data={"username": "hello@mail.com", "password": "12345"})
+def test_login_user(client, test_user):
+    res = client.post("/login", data={"username":test_user["email"], "password": test_user["password"]})
+    login_res = schemas.Token(**res.json())
     print(res.json())
 
+    payload = jwt.decode(login_res.access_token, settings.jwt_secret_key, algorithms=[settings.jwt_algorythm])
+    id = payload.get("user_id")
+
+
     assert res.status_code == 200
+    assert login_res.token_type == "bearer"
+    assert id == test_user["id"]
