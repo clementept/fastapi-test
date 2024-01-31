@@ -16,6 +16,21 @@ jobs:
             JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
             JWT_ALGORYTHM: ${{secrets.JWT_ALGORYTHM}}
             JWT_ACCESS_TOKEN_EXPIRE_MINUTES: ${{secrets.JWT_ACCESS_TOKEN_EXPIRE_MINUTES}}
+
+        services:
+            postgres:
+                image: postgres
+                env:
+                    POSTGRES_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
+                    POSTGRES_DB: ${{secrets.TEST_DATABASE_NAME}}
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+
         runs-on: ubuntu-latest
         steps:
             - name: Pulling git repo
