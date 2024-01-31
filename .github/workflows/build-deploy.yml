@@ -8,6 +8,13 @@ jobs:
         steps:
             - name: Pulling git repo
               uses: actions/checkout@v2
-            - name: Pull complete
-              run: echo "Pull complete"
+            - name: Install python v3.12.1
+              uses: actions/setup-python@v2
+              with:
+                python-version: "3.12.1"
+            - name: Update pip
+              run: python -m pip install --upgrade pip
+            - name: Install all dependencies
+              run: pip install -r requirements.txt 
+
    
