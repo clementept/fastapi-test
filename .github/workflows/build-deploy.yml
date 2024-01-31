@@ -4,6 +4,16 @@ on: [push, pull_request]
 
 jobs:
     job1:
+        env:
+            DATABASE_HOSTNAME: localhost
+            DATABASE_PORT: 5432
+            DATABASE_PASSWORD: donotbothermemorizing
+            DATABASE_NAME: fastapi_posts
+            TEST_DATABASE_NAME: fastapi_posts_test
+            DATABASE_USERNAME: postgres
+            JWT_SECRET_KEY: 277aa6249446988ece1d8787b2c4dc0944276a56b7056823ed03a00fc55cced6
+            JWT_ALGORYTHM: HS256
+            JWT_ACCESS_TOKEN_EXPIRE_MINUTES: 60
         runs-on: ubuntu-latest
         steps:
             - name: Pulling git repo
